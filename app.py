@@ -9,32 +9,53 @@ import dash_html_components as html
 import plotly.express as px
 import pandas as pd
 
+from dash.dependencies import Input, Output
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+tab_style = {
+    'borderBottom': '1px solid #d6d6d6',
+    'fontWeight': 'bold'
+}
 
-app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
+tab_selected_style = {
+    'borderTop': '1px solid #d6d6d6',
+    'borderBottom': '1px solid #d6d6d6',
+    'backgroundColor': '#119DFF',
+    'color': 'white',
+    'fontWeight': 'bold'
+}
 
-    html.Div(children='''
-        Dash: A web application framework for Python.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
+app.layout = html.Div([
+    html.Div([html.H1('House Price Prediction Using Linear Regression')], style={'text-align': 'center'}),
+    dcc.Tabs(id='tabs-example', value='tab-evaluate', children=[
+        dcc.Tab(label='Model Evaluation', value='tab-evaluate', style=tab_style, selected_style=tab_selected_style),
+        dcc.Tab(label='Error Terms', value='tab-error', style=tab_style, selected_style=tab_selected_style),
+    ]),
+    html.Div(id='tabs-example-content')
 ])
+
+@app.callback(Output('tabs-example-content', 'children'),
+              Input('tabs-example', 'value'))
+def render_content(tab):
+    if tab == 'tab-evaluate':
+        return html.Div([
+            html.Br(),
+            html.Br(),
+            html.Img(src=app.get_asset_url('predictionScatter.png'))
+        ], style={'text-align': 'center'})
+    elif tab == 'tab-error':
+        return html.Div([
+            html.Br(),
+            html.Br(),
+            html.Img(src=app.get_asset_url('errorTerms.png')),
+            html.Img(src=app.get_asset_url('errorScatter.png'))
+        ], style={'text-align': 'center'})
 
 if __name__ == '__main__':
     app.run_server(debug=True)
