@@ -33,9 +33,13 @@ tab_selected_style = {
 
 app.layout = html.Div([
     html.Div([html.H1('House Price Prediction Using Linear Regression')], style={'text-align': 'center'}),
-    dcc.Tabs(id='tabs-example', value='tab-evaluate', children=[
-        dcc.Tab(label='Model Evaluation', value='tab-evaluate', style=tab_style, selected_style=tab_selected_style),
+    dcc.Tabs(id='tabs-example', value='tab-outlierAna', children=[
+        dcc.Tab(label='Outlier Analysis', value='tab-outlierAna', style=tab_style, selected_style=tab_selected_style),
+        dcc.Tab(label='Outlier Analysis Results', value='tab-outlierRes', style=tab_style, selected_style=tab_selected_style),
+        dcc.Tab(label='Exploratory Data Analytics', value='tab-explore', style=tab_style, selected_style=tab_selected_style),
+        dcc.Tab(label='Check Correlation Coefficients', value='tab-heatmap', style=tab_style, selected_style=tab_selected_style),
         dcc.Tab(label='Error Terms', value='tab-error', style=tab_style, selected_style=tab_selected_style),
+        dcc.Tab(label='Model Evaluation', value='tab-evaluate', style=tab_style, selected_style=tab_selected_style),
     ]),
     html.Div(id='tabs-example-content')
 ])
@@ -43,7 +47,29 @@ app.layout = html.Div([
 @app.callback(Output('tabs-example-content', 'children'),
               Input('tabs-example', 'value'))
 def render_content(tab):
-    if tab == 'tab-evaluate':
+    if tab == 'tab-outlierAna':
+        return html.Div([
+            html.H2('Outliers Box Plot'),
+            html.Img(src=app.get_asset_url('boxPlotBefore.png')),
+        ], style={'text-align': 'center'})
+    elif tab == 'tab-outlierRes':
+        return html.Div([
+            html.H2('After Trimming Outliers'),
+            html.Img(src=app.get_asset_url('boxPlot.png')),
+        ], style={'text-align': 'center'})
+    elif tab == 'tab-explore':
+        return html.Div([
+            html.H2('Visualize Numeric Variables By Pair Plot'),
+            html.Img(src=app.get_asset_url('pairPlot.png')),
+            html.H2('Visualize Categorical Variables'),
+            html.Img(src=app.get_asset_url('boxPlotCategorical.png')),
+        ], style={'text-align': 'center'})
+    elif tab == 'tab-heatmap':
+        return html.Div([
+            html.H2('Heat Map'),
+            html.Img(src=app.get_asset_url('heatMap.png')),
+        ], style={'text-align': 'center'})
+    elif tab == 'tab-evaluate':
         return html.Div([
             html.Br(),
             html.Br(),

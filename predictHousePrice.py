@@ -415,10 +415,11 @@ plt.show()
 # In[49]:
 
 
+fig = plt.figure()
 plt.scatter(y_train,res)
-fig.suptitle('Result Scatter Plot', fontsize = 20)           # Plot heading
+fig.suptitle('Scatter Plot', fontsize = 20)           # Plot heading
 plt.xlabel('y_train', fontsize = 18)                         # X-label
-plt.ylabel('result', fontsize = 18)                          # X-label
+plt.ylabel('y_pred - y_train', fontsize = 18)                          # X-label
 plt.show()
 
 
